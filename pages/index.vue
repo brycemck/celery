@@ -14,16 +14,17 @@
     constructor(twitchNick) {
       this.soundsPath = 'sounds'
       this.commandsPath = 'commands'
-      this.ChatCommands = new Map()
       this.twitchNick = twitchNick
       this.messagesToDisplay = reactive([])
     }
     handleWSSMessage(message) { // when there's a new message sent to the web socket server (localhost)
+      const messageData = JSON.parse(message.data)
       // console.log('[handle wss message', message, ']');
       if (message.data[0] == ':') {
         // safe to ignore just info message
       } else {
-        this.newChatMessage(JSON.parse(message.data))
+        this.pushChatMessage(messageData)
+        this.handleChatMessage(messageData)
       }
     }
     parseTags = (tags) => { // parse tags in message data
@@ -285,7 +286,7 @@
     
       return parsedMessage;
     }
-    newChatMessage = (message) => { // push a new chat message to the ChatWidget component
+    pushChatMessage = (message) => { // push a new chat message to the ChatWidget component
       // parse badges
       console.log('[gonna be a new chat message', message, ']')
       if (message.tags.badges) {
@@ -332,6 +333,46 @@
       this.messagesToDisplay.push(message);
       console.log(this.messagesToDisplay)
     }
+    handleChatMessage = async (message) => { // handle the chat message, check for command
+      const that = this;
+      if (message.parameters.startsWith('!')) { // message starts with ! so invoking command
+        const args = message.parameters.slice(1).split(/ +/);
+        const commandName = args.shift().toLowerCase();
+    
+        // If the command isn't in the command folder, move on
+        const { data, pending, error, refresh } = await useFetch(`/api/commands/${commandName}`, {
+          onResponse({ request, response, options }) {
+            if(!response) return;
+        
+            if (response.args && !args.length) {
+              let reply = 'That command requires more details!';
+          
+              // If we have details on how to use the args, provide them
+              if (response.usage) {
+                reply += `\nThe proper usage would be: \`!${command.name} ${command.usage}\``;
+              }
+          
+              // Send a reply from the bot about any error encountered
+              return that.sendChatMessage(reply);
+            }
+
+            try {
+              // Run the command
+              const run = eval('(' + response._data.run + ')')
+              run().then((message) => {
+                that.sendChatMessage(message)
+              })
+            } catch(error) {
+              that.sendChatMessage('There was an error running that! (common celery L)');
+              return console.error(error);
+            }
+          }
+        })
+      }
+    }
+    sendChatMessage = (message) => {
+      this.wssConnection.send(`PRIVMSG #${this.twitchNick} :${message}`)
+    }
   }
 
   // initialize twitchbot, make it reactive
@@ -341,12 +382,12 @@
 
   onMounted(function() {
     // connect as a client to the localhost web socket server (started in middleware)
-    const wssConnection = new WebSocket('ws://localhost:6969')
-    wssConnection.onmessage = (message) => { // on web socket server message, send it to TwitchBot
+    twitchBot.wssConnection = new WebSocket('ws://localhost:6969')
+    twitchBot.wssConnection.onmessage = (message) => { // on web socket server message, send it to TwitchBot
       // console.log('[wssConnection onmessage', message, ']')
       twitchBot.handleWSSMessage(message)
     }
-    wssConnection.onopen = function (event) {
+    twitchBot.wssConnection.onopen = function (event) {
       console.log('opened connection to wss')
     }
   })

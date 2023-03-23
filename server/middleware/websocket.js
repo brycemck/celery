@@ -360,6 +360,9 @@ class TwitchChatConnector {
         // console.log('[passing message to client', message, ']')
         this.wss.send('' + message);
     }
+    sendChatMessage = (message) => {
+      this.ws.send(message)
+    }
 }
 
 export default defineEventHandler((event) => {
@@ -368,14 +371,9 @@ export default defineEventHandler((event) => {
         const wss = new WebSocketServer({ port: 6969 })
         wss.on('connection', (thisWs) => {
             thisWs.send(':you are connected to the wss! nice!')
-
-            thisWs.on('message', function message(data, isBinary) {
-                wss.clients.forEach(function each(client) {
-                    if (client.readyState === WebSocket.OPEN) {
-                      client.send(data, { binary: isBinary });
-                    }
-                });
-            })
+            thisWs.on('message', function message(data) {
+              global.ws.sendChatMessage(data.toString())
+            });
             if (!global.ws && access_token) {
                 const ws = new TwitchChatConnector(access_token, thisWs);
                 global.ws = ws;

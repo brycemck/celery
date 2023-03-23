@@ -7,6 +7,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "type": "module",
   "devDependencies": {
     "nuxt": "^3.3.1",
     "sass": "^1.59.3"
