@@ -2,7 +2,10 @@
 Welcome to Celery. Built in Nuxt 3, this app's purpose is to connect to and act on Twitch chat and channel events, as well as generate front-end pages that can be used as browser overlays / configuration pages.
 
 ## Prerequisites
-This project uses Node 18.15.0. The latest stable version at the time of this writing is 19.x, however Nuxt 3 has not been updated to support Node 19. To make it easy, I highly recommend you use nvm, and set the project's working node version to 18.15.0.
+This project uses Node 18.15.0. The latest stable version at the time of this writing is 19.x, however Nuxt 3 has not been updated to support Node 19. To make it easy, I highly recommend you use nvm, and set the project's working node version to 18.15.0. There is already an .nvmrc file in this project, so once you get nvm installed, all you'll have to do is run
+```bash
+$ nvm use
+```
 
 It's also recommended that you install the basic Vue extensions in VSCode (or whichever text editor you are using) to get syntax highlighting on you
 
@@ -10,7 +13,7 @@ It's also recommended that you install the basic Vue extensions in VSCode (or wh
 If you want to get this project running locally, all you have to do is clone the repo, and then in a terminal window, navigate to the project directory and run the following:
 
 ```bash
-npm install
+$ npm install
 ```
 
 You'll also need to create a .env file at the root of the project. Variables need to be prefixed with `NUXT_` for them to be able to be accessed via Nuxt. `NUXT_PUBLIC_` variables are exposed to the front-end, so don't mark anything secret with that prefix.
