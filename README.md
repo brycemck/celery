@@ -7,7 +7,7 @@ This project uses Node 18.15.0. The latest stable version at the time of this wr
 $ nvm use
 ```
 
-It's also recommended that you install the basic Vue extensions in VSCode (or whichever text editor you are using) to get syntax highlighting on you
+It's also recommended that you install the basic Vue extensions in VSCode (or whichever text editor you are using) to get syntax highlighting for Vue.
 
 ## Get started
 If you want to get this project running locally, all you have to do is clone the repo, and then in a terminal window, navigate to the project directory and run the following:
