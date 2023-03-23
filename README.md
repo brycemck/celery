@@ -11,7 +11,14 @@ If you want to get this project running locally, all you have to do is clone the
 
 ```bash
 npm install
-npm run dev
+```
+
+You'll also need to create a .env file at the root of the project. Variables need to be prefixed with `NUXT_` for them to be able to be accessed via Nuxt. `NUXT_PUBLIC_` variables are exposed to the front-end, so don't mark anything secret with that prefix.
+```
+# client ID from Twitch developer application that you create
+NUXT_TWITCH_CLIENT_ID=
+# lowercase version of whatever Twitch username you are building this for
+NUXT_PUBLIC_TWITCH_NICK=
 ```
 
 That's it! You should be able to access the build at http://localhost:3000.
