@@ -1,5 +1,6 @@
 <template>
   <ChatWidget :twitchBot="twitchBot" />
+  <Sounds v-if="PlayingSound" audioFile="/sounds/test.mp3"/>
 </template>
 
 <script setup>
@@ -8,6 +9,9 @@
   if (!accessTokenCookie.value || accessTokenCookie.value.length < 1) { // if no value in the cookie
     navigateTo('/login')
   }
+
+  // sound setup
+  let PlayingSound = false;
 
   // build twitch bot class
   class TwitchBot {
@@ -355,13 +359,17 @@
               // Send a reply from the bot about any error encountered
               return that.sendChatMessage(reply);
             }
-
+            
             try {
               // Run the command
-              const run = eval('(' + response._data.run + ')')
-              run().then((message) => {
-                that.sendChatMessage(message)
-              })
+              if (response._data.sound) {
+                PlayingSound = true
+              } else {
+                const run = eval('(' + response._data.run + ')')
+                run().then((message) => {
+                  that.sendChatMessage(message)
+                })
+              }
             } catch(error) {
               that.sendChatMessage('There was an error running that! (common celery L)');
               return console.error(error);
