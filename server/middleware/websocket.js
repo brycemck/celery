@@ -9,7 +9,7 @@ const config = useRuntimeConfig()
 
 class TwitchChatConnector {
     constructor(access_token, wss) {
-        const that = this;
+      const that = this;
       this.ws = new WebSocket('ws://irc-ws.chat.twitch.tv:80');
       this.ws.onopen = function (event) { that.wsOnOpen(event) }
       this.ws.onmessage = function (message) { that.wsOnMessage(message); }
@@ -370,7 +370,7 @@ export default defineEventHandler((event) => {
     if (!global.wss) { // wss hasn't been started yet
         const wss = new WebSocketServer({ port: 6969 })
         wss.on('connection', (thisWs) => {
-            thisWs.send(':you are connected to the wss! nice!')
+            // thisWs.send(':you are connected to the wss! nice!')
             thisWs.on('message', function message(data) {
               global.ws.sendChatMessage(data.toString())
             });

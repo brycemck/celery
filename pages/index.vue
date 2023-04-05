@@ -1,12 +1,16 @@
 <template>
+  welcome {{ username }}
   <ChatWidget :twitchBot="twitchBot" />
-  <Sounds v-if="PlayingSound" audioFile="/sounds/test.mp3"/>
 </template>
 
 <script setup>
-  // get the access_token cookie
-  const accessTokenCookie = useCookie('access_token')
-  if (!accessTokenCookie.value || accessTokenCookie.value.length < 1) { // if no value in the cookie
+  import { useUserStore } from '@/stores/userStore'
+  import { storeToRefs } from 'pinia'
+  
+  const userStore = useUserStore()
+  const { username, id, loggedIn, access_token } = storeToRefs(userStore)
+
+  if (!access_token.value || access_token.value.length < 1) { // if no value in the cookie
     navigateTo('/login')
   }
 
@@ -388,7 +392,7 @@
   // provide twitchBot to child components
   provide('twitchBot', twitchBot)
 
-  onMounted(function() {
+  onMounted( function() {
     // connect as a client to the localhost web socket server (started in middleware)
     twitchBot.wssConnection = new WebSocket('ws://localhost:6969')
     twitchBot.wssConnection.onmessage = (message) => { // on web socket server message, send it to TwitchBot

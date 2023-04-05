@@ -6,5 +6,15 @@ export default defineNuxtConfig({
       twitchNick: ''
     }
   },
-  css: [ '@/assets/styles/main.scss' ]
+  css: [ '@/assets/styles/main.scss' ],
+  modules: [
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
+  ],
+  pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      'defineStore', // import { defineStore } from 'pinia'
+    ],
+  }
 })
