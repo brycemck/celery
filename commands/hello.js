@@ -2,7 +2,7 @@ const run = async function() {
     const quotes = [
         "Ah, the clumsy adolescence. It's a phase we've all been through. Except for me. I was like a cat.",
         "I'm afraid I just blue myself.",
-        "Okay, lindsay, are you forgetting that I was a professional twice-over? An analyst and a therapist. An analrapist.",
+        "Okay, Lindsay, are you forgetting that I was a professional twice-over? An analyst and a therapist. An analrapist.",
         "Oh, mercy me! I keep forgetting I'm in the colonies!",
         "Oh boy, I got some looks on the bus cause of this!",
         "Excuse me, do these effectively hide my thunder?",
