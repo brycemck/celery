@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
   const { twitchClientId } = useRuntimeConfig()
-
   const { userId, accessToken } = getQuery(event)
 
   // if ( !userId ) return;

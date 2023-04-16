@@ -367,6 +367,9 @@ class TwitchChatConnector {
 
 export default defineEventHandler((event) => {
   let userCookie = getCookie(event, 'user');
+  if (!userCookie) {
+    return;
+  }
   let access_token = JSON.parse(userCookie)["access_token"];
   
   if (!global.wss) { // wss hasn't been started yet

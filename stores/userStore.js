@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user', () => {
   let profileImageUrl = ref('')
 
   function setUserInfo(userData) {
+    console.log(userData)
     id.value = userData.id
     username.value = userData.display_name
     channelDescription.value = userData.description
