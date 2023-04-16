@@ -1,16 +1,11 @@
-import { useUserStore } from '@/stores/userStore'
-
 export default defineEventHandler(async (event) => {
   const { twitchClientId } = useRuntimeConfig()
 
-  const userStore = useUserStore()
-  const { access_token } = userStore
-
-  console.log(access_token)
-
-  const { userId } = getQuery(event)
+  const { userId, accessToken } = getQuery(event)
 
   // if ( !userId ) return;
+
+  // console.log(accessToken)
 
   const userData = await $fetch('https://api.twitch.tv/helix/users', {
     method: 'get',
@@ -18,7 +13,7 @@ export default defineEventHandler(async (event) => {
       name: 'celerymanttv'
     },
     headers: {
-      'Authorization': `Bearer ${access_token.value}`,
+      'Authorization': `Bearer ${accessToken}`,
       'Client-Id': twitchClientId
     }
   })

@@ -9,8 +9,6 @@
 
   // use runtime config for env variables
   const { twitchClientId } = useRuntimeConfig()
-  // get the access_token cookie
-  const accessTokenCookie = useCookie('access_token')
 
   // build the Oauth request for Twitch to get a user access token
   class TwitchOauth {
@@ -39,11 +37,12 @@
   let twitchAuthorization = new TwitchOauth(twitchClientId, redirectUri, scopes);
 
   const userStore = useUserStore()
+  // console.log('logging user store')
+  // console.log(userStore)
   const { access_token } = storeToRefs(userStore)
   const { setUserInfo, setAccessToken } = userStore
 
   const hash = useRoute().hash;
-  console.log(access_token)
 
   if (access_token.value !== undefined && access_token.value.length > 0) { // cookie is already set
     navigateTo('/') // go back home
@@ -51,11 +50,16 @@
   } else if (hash) { // if there's a hash
     console.log('there is a hash')
     const params = new URLSearchParams(hash.replace('#', '?'))
-    setAccessToken(params.get('access_token'))
-    // accessTokenCookie.value = params.get('access_token');
+    const accessToken = params.get('access_token')
+    setAccessToken(accessToken)
+
     await useFetch('/api/twitchuser', {
+      query: {
+        accessToken: accessToken
+      },
       onResponse({request, response, options}) {
         setUserInfo(response._data)
+        // console.log(response)
       }
     });
     navigateTo('/') // go back home

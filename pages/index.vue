@@ -296,7 +296,7 @@
     }
     pushChatMessage = (message) => { // push a new chat message to the ChatWidget component
       // parse badges
-      console.log('[gonna be a new chat message', message, ']')
+      // console.log('[gonna be a new chat message', message, ']')
       if (message.tags.badges) {
         message.tags.badgesList = []
         for (let key in message.tags.badges) {
@@ -339,7 +339,7 @@
       // limit messages that can be displayed at once, remove the first message in the array of messages if at the limit
       if (this.messagesToDisplay.length == 15) this.messagesToDisplay.shift();
       this.messagesToDisplay.push(message);
-      console.log(this.messagesToDisplay)
+      // console.log(this.messagesToDisplay)
     }
     handleChatMessage = async (message) => { // handle the chat message, check for command
       const that = this;
@@ -388,7 +388,7 @@
   }
 
   // initialize twitchbot, make it reactive
-  const twitchBot = reactive(new TwitchBot('tayne_bot'))
+  const twitchBot = reactive(new TwitchBot('celerymanttv'))
   // provide twitchBot to child components
   provide('twitchBot', twitchBot)
 
